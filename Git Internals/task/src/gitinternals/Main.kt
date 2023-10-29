@@ -1,24 +1,15 @@
 package gitinternals
 
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.zip.Inflater
-
 fun main() {
-    println("Enter git object location:")
-    var filePath = readlnOrNull()
+    val userInputReader = ConsoleUserInputReader()
+    val fileReader = NioFileReader()
+    val dataInflater = ZipInflater()
 
     try {
-        val fileBytes = Files.readAllBytes(Paths.get(filePath))
+        val fileBytes = fileReader.readBytes(userInputReader.readUserInput().objectLocation)
+        val result = dataInflater.inflate(fileBytes)
 
-        val inflater = Inflater()
-        inflater.setInput(fileBytes)
-
-        val result = ByteArray(1000)
-        val resultLength = inflater.inflate(result)
-        inflater.end()
-
-        val output = String(result, 0, resultLength)
+        val output = String(result.data, 0, result.length)
         output.split("\u0000").forEach { println(it) }
 
     } catch (e: Exception) {
