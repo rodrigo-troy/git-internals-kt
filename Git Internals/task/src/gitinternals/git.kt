@@ -25,7 +25,7 @@ class GitObjectDataReader {
 class GitObjectDataDisplayer {
     fun display(data: String) {
         val type = data.substringBefore(' ')
-        val length = data.drop(type.length + 1).substringBefore("\u0000")
+        val length = data.drop(type.length).substringBefore("\u0000").trim()
         println("type:$type length:$length")
     }
 }
