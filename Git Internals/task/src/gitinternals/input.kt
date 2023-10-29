@@ -8,14 +8,19 @@ $ Project: Git Internals
  * Time: 17:56
  */
 
-data class UserInput(val objectLocation: String)
+data class Stage1UserInput(val objectLocation: String)
+data class Stage2UserInput(val directoryPath: String, val objectHash: String)
 
-interface UserInputReader {
-    fun readUserInput(): UserInput
+interface Stage1UserInputReader {
+    fun readUserInput(): Stage1UserInput
 }
 
-class ConsoleUserInputReader : UserInputReader {
-    override fun readUserInput(): UserInput {
+interface Stage2UserInputReader {
+    fun readUserInput(): Stage2UserInput
+}
+
+class ConsoleUserInputReader : Stage1UserInputReader {
+    override fun readUserInput(): Stage1UserInput {
         println("Enter git object location:")
         val filePath = readlnOrNull()
 
@@ -24,6 +29,18 @@ class ConsoleUserInputReader : UserInputReader {
             return readUserInput();
         }
 
-        return UserInput(filePath)
+        return Stage1UserInput(filePath)
+    }
+}
+
+class Stage2ConsoleUserInputReader : Stage2UserInputReader {
+    override fun readUserInput(): Stage2UserInput {
+        println("Enter .git directory location:")
+        val directoryPath = readlnOrNull() ?: throw IllegalArgumentException("Directory path required")
+
+        println("Enter git object hash:")
+        val objectHash = readlnOrNull() ?: throw IllegalArgumentException("Object hash required")
+
+        return Stage2UserInput(directoryPath, objectHash)
     }
 }

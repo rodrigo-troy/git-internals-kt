@@ -1,17 +1,17 @@
 package gitinternals
 
 fun main() {
-    val userInputReader = ConsoleUserInputReader()
-    val fileReader = NioFileReader()
+    val userInputReader = Stage2ConsoleUserInputReader()
+    val fileReader = GitObjectDataReader()
     val dataInflater = ZipInflater()
     val dataConverter = DefaultDataConverter()
+    val displayer = GitObjectDataDisplayer()
 
     try {
-        val fileBytes = fileReader.readBytes(userInputReader.readUserInput().objectLocation)
+        val fileBytes = fileReader.readObjectData(userInputReader.readUserInput())
         val result = dataInflater.inflate(fileBytes)
         val output = dataConverter.convert(result)
-
-        output.split("\u0000").forEach { println(it) }
+        displayer.display(output)
     } catch (e: Exception) {
         e.printStackTrace()
         println("An error occurred: ${e.message}")

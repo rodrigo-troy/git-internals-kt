@@ -5,7 +5,7 @@ package gitinternals
 $ Project: Git Internals
  * User: rodrigotroy
  * Date: 29-10-23
- * Time: 18:39
+ * Time: 18:54
  */
 interface DataConverter {
     fun convert(result: InflationResult): String
