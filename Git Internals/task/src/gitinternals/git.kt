@@ -80,11 +80,11 @@ class GitObjectDataDisplayer {
         val parts = line.split(" ")
         val name = parts.takeWhile { !it.contains("@") }.joinToString(" ")
         val email = parts.first { it.contains("@") }.removeSurrounding("<", ">")
-        val timestamp = parts[parts.size - 2].toLong()          // Unix timestamp
+        val timestamp = parts[parts.size - 2].toLong()
         val timeZone = parts.last()
 
         val formattedDate = Instant.ofEpochSecond(timestamp)
-            .atOffset(ZoneOffset.of(timeZone.replaceFirst(":", "")))  // Removing ":" to get valid timezone
+            .atOffset(ZoneOffset.of(timeZone.replaceFirst(":", "")))
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss XXX"))
         return "$name $email original timestamp: $formattedDate"
     }
@@ -93,11 +93,11 @@ class GitObjectDataDisplayer {
         val parts = line.split(" ")
         val name = parts.takeWhile { !it.contains("@") }.joinToString(" ")
         val email = parts.first { it.contains("@") }.removeSurrounding("<", ">")
-        val timestamp = parts[parts.size - 2].toLong()          // Unix timestamp
+        val timestamp = parts[parts.size - 2].toLong()
         val timeZone = parts.last()
 
         val formattedDate = Instant.ofEpochSecond(timestamp)
-            .atOffset(ZoneOffset.of(timeZone.replaceFirst(":", "")))  // Removing ":" to get valid timezone
+            .atOffset(ZoneOffset.of(timeZone.replaceFirst(":", "")))
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss XXX"))
         return "$name $email commit timestamp: $formattedDate"
     }
